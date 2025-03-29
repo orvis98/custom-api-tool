@@ -2,7 +2,7 @@ package main
 
 import (
 	apitoolv1 "github.com/orvis98/api-tool/v1alpha1"
-	appsv1 "k8s.io/api/apps/v1"
+	//appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	httproutev1 "gateway.networking.k8s.io/httproute/v1"
 	securitypolicyv1 "gateway.envoyproxy.io/securitypolicy/v1alpha1"
@@ -39,7 +39,7 @@ import (
 #v1alpha1: apitoolv1.#Composition & {
 	composite: spec: #APISpec.versions.v1alpha1.spec
 	objects: {
-		deployment: appsv1.#Deployment & {
+		deployment: { // appsv1.#Deployment & { (bug?)
 			apiVersion: "apps/v1"
 			kind:       "Deployment"
 			spec: {

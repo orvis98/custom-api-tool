@@ -122,3 +122,19 @@ import (
 		}
 	}
 }
+
+#Test: #v1alpha1 & {
+	composite: {
+		metadata: name: "demo-2cjfb"
+		spec: {
+			claimRef: {
+				name:      "demo"
+				namespace: "default"
+			}
+			image: "nginx"
+			basicAuth: users: """
+				foo:{SHA}Ys23Ag/5IOWqZCw9QGaVDdHwH00=
+				"""
+		}
+	}
+}

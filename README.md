@@ -18,4 +18,7 @@ demo-2cjfb-httproute        HTTPRoute        default          True     True    2
 demo-2cjfb-secret           Secret           default          True     True    2s
 demo-2cjfb-securitypolicy   SecurityPolicy   default          True     True    2s
 demo-2cjfb-service          Service          default          True     True    2s
+
+# test composition
+cue export samples/webapp.cue -e #Test
 ```

@@ -39,7 +39,7 @@ import (
 #v1alpha1: apitoolv1.#Composition & {
 	composite: spec: #APISpec.versions.v1alpha1.spec
 	objects: {
-		deployment: { // appsv1.#Deployment & { (bug?)
+		deployment: {// appsv1.#Deployment & { (bug?)
 			apiVersion: "apps/v1"
 			kind:       "Deployment"
 			spec: {
@@ -120,5 +120,5 @@ import (
 				}
 			}
 		}
-  }
+	}
 }

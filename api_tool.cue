@@ -22,19 +22,19 @@ command: xrd: {
 		spec: {
 			group: #APISpec.group
 			names: {
-				kind:       #APISpec.kind
-				plural:     #APISpec.plural
+				kind:   #APISpec.kind
+				plural: #APISpec.plural
 				// shortNames can be undefined, but cannot be an empty list
 				if #APISpec.shortNames != [] {
 					shortNames: #APISpec.shortNames
 				}
-				singular:   #APISpec.singular
+				singular: #APISpec.singular
 			}
 			if #APISpec.claimNames != _|_ {
 				claimNames: {
-					kind: #APISpec.claimNames.kind
+					kind:     #APISpec.claimNames.kind
 					singular: #APISpec.claimNames.singular
-					plural: #APISpec.claimNames.plural
+					plural:   #APISpec.claimNames.plural
 					// shortNames can be undefined, but cannot be an empty list
 					if #APISpec.claimNames.shortNames != [] {
 						shortNames: #APISpec.claimNames.shortNames
@@ -89,11 +89,11 @@ command: composition: {
 					step: "compose-resource"
 					functionRef: name: "function-cue"
 					input: {
-						apiVersion: "fn-cue/v1"         // can be anything
-						kind:       "CueFunctionParams" // can be anything
-						source:     "Inline"            // only Inline is supported for now
+						apiVersion: "fn-cue/v1"                    // can be anything
+						kind:       "CueFunctionParams"            // can be anything
+						source:     "Inline"                       // only Inline is supported for now
 						script:     composition["def-\(k)"].stdout // text of cue program
-						debug:      v.debug // show inputs and outputs for the composition in the pod log in pretty format
+						debug:      v.debug                        // show inputs and outputs for the composition in the pod log in pretty format
 					}
 				}]
 			}

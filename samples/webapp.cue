@@ -51,7 +51,7 @@ import (
 						name:  "webapp"
 						image: composite.spec.image
 						ports: [{containerPort: composite.spec.containerPort}]
-						if env != _|_ {
+						if composite.spec.env != _|_ {
 							env: [for k, v in composite.spec.env {name: k, value: v}]
 						}
 					}]

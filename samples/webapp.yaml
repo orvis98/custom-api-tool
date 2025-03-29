@@ -1,0 +1,11 @@
+---
+apiVersion: example.com/v1alpha1
+kind: WebApp
+metadata:
+  name: demo
+  namespace: default
+spec:
+  image: nginx
+  basicAuth:
+    users: |
+      foo:{SHA}Ys23Ag/5IOWqZCw9QGaVDdHwH00=

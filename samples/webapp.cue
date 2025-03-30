@@ -30,7 +30,10 @@ import (
 					users: string
 				}
 			}
-			status: {}
+			status: {
+				// The set of hostnames that match against the HTTP Host header.
+				hostnames?: [...string]
+			}
 			composition: #v1alpha1
 		}
 	}
@@ -122,6 +125,7 @@ import (
 			}
 		}
 	}
+	response: desired: composite: resource: status: hostnames: objects.httproute.spec.hostnames
 }
 
 #Test: #v1alpha1 & {

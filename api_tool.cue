@@ -68,7 +68,7 @@ command: xrd: {
 		}
 	}
 	print: cli.Print & {
-		text: yaml.Marshal(_xrd)
+		text: "---\n\(yaml.Marshal(_xrd))"
 	}
 }
 

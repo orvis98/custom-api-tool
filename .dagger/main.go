@@ -45,3 +45,16 @@ func (m *ApiTool) GenCompositions(
 		WithExec([]string{"cue", "cmd", "composition"}).
 		Stdout(ctx)
 }
+
+// Generate and print XRD and Compositions from an API specification.
+func (m *ApiTool) Gen(
+	ctx context.Context,
+	apiSpec *dagger.File,
+	// +optional
+	// +defaultPath="/"
+	source *dagger.Directory,
+) (string, error) {
+	xrd, _ := m.GenXRD(ctx, apiSpec, source)
+	compositions, _ := m.GenCompositions(ctx, apiSpec, source)
+	return xrd + compositions, nil
+}

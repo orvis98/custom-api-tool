@@ -4,15 +4,21 @@ package v1alpha1
 #Composition: {
 	// The request observes the composite.
 	#request: {
-		observed: composite: resource: {
-			metadata: {...}
-			spec: {...}
+		observed: {
+			composite: resource: {
+				metadata: {...}
+				spec: {...}
+				status: {...}
+			}
+			resources: {...}
 		}
-		...
 	}
 
 	// Reference to the composite resource in the request.
 	composite: #request.observed.composite.resource
+
+	// Reference to the composite resource in the request.
+	resources: #request.observed.resources
 
 	// The objects to create as part of the function.
 	objects: [string]: {
@@ -42,14 +48,17 @@ package v1alpha1
 	}
 
 	// Transform the response.
-	response: desired: resources: {
-		for k, v in objects {
-			"\(k)": resource: {
-				apiVersion: "kubernetes.crossplane.io/v1alpha2"
-				kind:       "Object"
-				metadata: name: "\(composite.metadata.name)-\(k)"
-				spec: forProvider: manifest: v
+	response: desired: {
+		resources: {
+			for k, v in objects {
+				"\(k)": resource: {
+					apiVersion: "kubernetes.crossplane.io/v1alpha2"
+					kind:       "Object"
+					metadata: name: "\(composite.metadata.name)-\(k)"
+					spec: forProvider: manifest: v
+				}
 			}
 		}
+		...
 	}
 }

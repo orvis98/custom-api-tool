@@ -48,13 +48,18 @@ command: xrd: {
 					referenceable: v.referenceable
 					served:        v.served
 					_cmd: {
-						"def-\(k)": exec.Run & {
+						"spec-\(k)": exec.Run & {
 							cmd:     "cue def . -e #APISpec.versions.\(k).spec"
 							stdout:  string
 							_schema: "#spec\(strings.TrimPrefix(stdout, "\n_#def\n_#def"))"
 						}
+						"status-\(k)": exec.Run & {
+							cmd:     "cue def . -e #APISpec.versions.\(k).status"
+							stdout:  string
+							_schema: "#status\(strings.TrimPrefix(stdout, "\n_#def\n_#def"))"
+						}
 						"eval-\(k)": exec.Run & {
-							stdin:  _cmd["def-\(k)"]._schema
+							stdin:  _cmd["spec-\(k)"]._schema + _cmd["status-\(k)"]._schema
 							cmd:    "cue eval - --out=openapi+yaml"
 							stdout: string
 						}

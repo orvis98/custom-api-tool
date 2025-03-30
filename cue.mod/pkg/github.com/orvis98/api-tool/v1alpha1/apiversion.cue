@@ -12,8 +12,10 @@ package v1alpha1
 	// Spec describes the schema used for validation, pruning, and defaulting of
 	// this version of the defined composite resource.
 	spec: {...}
-	// reference to an Composition
+	// Status indicates the actual state of the composite resource.
+	status: {...}
+	// Reference to an Composition,
 	composition: #Composition
-	// show inputs and outputs for the composition in the pod log in pretty format
+	// Show inputs and outputs for the composition in the pod log in pretty format.
 	debug: bool | *false
 }

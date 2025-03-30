@@ -30,6 +30,13 @@ import (
 					users: string
 				}
 			}
+			status: {
+				// Total number of available pods.
+				availableReplicas?: int
+				// Represents the latest available observations of the deployment's current
+				// state.
+				deploymentConditions?: [...{...}]
+			}
 			composition: #v1alpha1
 		}
 	}

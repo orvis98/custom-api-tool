@@ -108,14 +108,14 @@ import (
 			spec: {
 				targetRef: {
 					group: "gateway.networking.k8s.io"
-					kind:  objects.httproute.kind
-					name:  composite.metadata.name
+					kind:  httproute.kind
+					name:  httproute.metadata.name
 				}
 				if composite.spec.basicAuth != _|_ {
 					basicAuth: users: {
 						group: ""
-						kind:  objects.secret.kind
-						name:  objects.secret.metadata.name
+						kind:  secret.kind
+						name:  secret.metadata.name
 					}
 				}
 			}

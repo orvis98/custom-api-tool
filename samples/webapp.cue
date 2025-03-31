@@ -41,7 +41,10 @@ import (
 
 // Composition function for API version `v1alpha1`.`
 #v1alpha1: apitoolv1.#Composition & {
-	composite: spec: #APISpec.versions.v1alpha1.spec
+	composite: {
+		spec: #APISpec.versions.v1alpha1.spec
+		...
+	}
 	objects: {
 		deployment: {// appsv1.#Deployment & { (bug?)
 			apiVersion: "apps/v1"
@@ -126,20 +129,4 @@ import (
 		}
 	}
 	response: desired: composite: resource: status: hostnames: objects.httproute.spec.hostnames
-}
-
-#Test: #v1alpha1 & {
-	composite: {
-		metadata: name: "demo-2cjfb"
-		spec: {
-			claimRef: {
-				name:      "demo"
-				namespace: "default"
-			}
-			image: "nginx"
-			basicAuth: users: """
-				foo:{SHA}Ys23Ag/5IOWqZCw9QGaVDdHwH00=
-				"""
-		}
-	}
 }

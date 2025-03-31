@@ -112,3 +112,25 @@ command: composition: {
 		}
 	}
 }
+
+// Print the result of testing a manifest against an APISpec using CUE.
+command: test: {
+	var: {
+		// Path to a file containing the manifest to test.
+		manifest: string @tag(manifest)
+		// Path to the APISpec.
+		apiSpec: *"apispec.cue" | string @tag(apiSpec)
+		// Output format.
+		out: *"yaml" | "json" | "cue"
+	}
+	if #APISpec.claimNames != _|_ {
+		read: exec.Run & {
+			cmd: "cue export \(var.manifest) -l \"claim\" samples/test.cue \(var.apiSpec) -e result.response --out=\(var.out)"
+		}
+	}
+	if #APISpec.claimNames == _|_ {
+		read: exec.Run & {
+			cmd: "cue export \(var.manifest) -l \"composite\" samples/test.cue \(var.apiSpec) -e result.response --out=\(var.out)"
+		}
+	}
+}

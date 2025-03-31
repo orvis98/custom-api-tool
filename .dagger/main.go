@@ -58,3 +58,19 @@ func (m *ApiTool) Gen(
 	compositions, _ := m.GenCompositions(ctx, apiSpec, source)
 	return xrd + compositions, nil
 }
+
+// Test an APISpec using a manifest and print the result.
+func (m *ApiTool) Test(
+	ctx context.Context,
+	manifest *dagger.File,
+	apiSpec *dagger.File,
+	// +optional
+	// +defaultPath="/"
+	source *dagger.Directory,
+) (string, error) {
+	return m.Cue(source).
+		WithFile("test.yaml", manifest).
+		WithFile("apispec.cue", apiSpec).
+		WithExec([]string{"cue", "cmd", "test", "-t", "manifest=test.yaml", "-t", "apiSpec=apispec.cue"}).
+		Stdout(ctx)
+}

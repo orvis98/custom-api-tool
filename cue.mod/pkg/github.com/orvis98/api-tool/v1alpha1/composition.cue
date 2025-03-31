@@ -6,6 +6,8 @@ package v1alpha1
 	#request: {
 		observed: {
 			composite: resource: {
+				apiVersion?: string
+				kind?:       string
 				metadata: {...}
 				spec: {...}
 				status: {...}

@@ -1,6 +1,6 @@
 # api-tool
 
-A tool for writing Crossplane XRDs and Compositions in CUE.
+A tool for maintaining Crossplane XRDs and Compositions in CUE.
 
 ## Architecture
 
@@ -11,7 +11,7 @@ As Crossplane is evaluating the same CUE, we can easily validate and test the AP
 
 ```mermaid
 graph TD;
-  APISpec --> api-tool
+  APISpec --> api-tool;
   api-tool -- Generates -->CompositeResourceDefinition;
   api-tool -- Generates -->Composition;
 ```

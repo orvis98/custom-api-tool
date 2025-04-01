@@ -18,59 +18,59 @@ func (m *ApiTool) Cue(
 		WithDirectory(".", source)
 }
 
-// Generate and print an XRD from an API specification.
+// Generate and print an XRD from a CustomAPI definition.
 func (m *ApiTool) GenXRD(
 	ctx context.Context,
-	apiSpec *dagger.File,
+	api *dagger.File,
 	// +optional
 	// +defaultPath="/"
 	source *dagger.Directory,
 ) (string, error) {
 	return m.Cue(source).
-		WithFile("apispec.cue", apiSpec).
+		WithFile("api.cue", api).
 		WithExec([]string{"cue", "cmd", "xrd"}).
 		Stdout(ctx)
 }
 
-// Generate and print Compositions from an API specification.
+// Generate and print Compositions from a CustomAPI definition.
 func (m *ApiTool) GenCompositions(
 	ctx context.Context,
-	apiSpec *dagger.File,
+	api *dagger.File,
 	// +optional
 	// +defaultPath="/"
 	source *dagger.Directory,
 ) (string, error) {
 	return m.Cue(source).
-		WithFile("apispec.cue", apiSpec).
+		WithFile("api.cue", api).
 		WithExec([]string{"cue", "cmd", "composition"}).
 		Stdout(ctx)
 }
 
-// Generate and print XRD and Compositions from an API specification.
+// Generate and print XRD and Compositions from a CustomAPI definition.
 func (m *ApiTool) Gen(
 	ctx context.Context,
-	apiSpec *dagger.File,
+	api *dagger.File,
 	// +optional
 	// +defaultPath="/"
 	source *dagger.Directory,
 ) (string, error) {
-	xrd, _ := m.GenXRD(ctx, apiSpec, source)
-	compositions, _ := m.GenCompositions(ctx, apiSpec, source)
+	xrd, _ := m.GenXRD(ctx, api, source)
+	compositions, _ := m.GenCompositions(ctx, api, source)
 	return xrd + compositions, nil
 }
 
-// Test an APISpec using a manifest and print the result.
+// Test a CustomAPI using a manifest and print the result.
 func (m *ApiTool) Test(
 	ctx context.Context,
 	manifest *dagger.File,
-	apiSpec *dagger.File,
+	api *dagger.File,
 	// +optional
 	// +defaultPath="/"
 	source *dagger.Directory,
 ) (string, error) {
 	return m.Cue(source).
 		WithFile("test.yaml", manifest).
-		WithFile("apispec.cue", apiSpec).
-		WithExec([]string{"cue", "cmd", "test", "-t", "manifest=test.yaml", "-t", "apiSpec=apispec.cue"}).
+		WithFile("api.cue", api).
+		WithExec([]string{"cue", "cmd", "test", "-t", "manifest=test.yaml", "-t", "api=api.cue"}).
 		Stdout(ctx)
 }

@@ -4,8 +4,8 @@ import (
 	"strings"
 )
 
-// An APISpec defines the schema for a new custom Kubernetes API.
-#APISpec: {
+// A CustomAPI defines the schema and pipeline sep for a new custom Kubernetes API.
+#CustomAPI: {
 	// group is the API group of the defined custom resource.
 	group: string & =~#"^[a-z0-9]{1,62}(\.[a-z0-9]{1,63})+$"# & strings.MaxRunes(253)
 	// kind is the serialized kind of the resource. It is normally CamelCase and singular.
@@ -29,6 +29,6 @@ import (
 		// shortNames are short names for the resource, exposed in API discovery documents.
 		shortNames: [...(string & =~#"^[a-z][a-z0-9-]+$"# & strings.MaxRunes(63))]
 	}
-	// versions is the list of all API versions of the defined composite resource.
+	// versions is the list of all API versions of the CustomAPI.
 	versions: [string]: #APIVersion
 }

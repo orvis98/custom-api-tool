@@ -1,4 +1,4 @@
-module dagger/api-tool
+module dagger/custom-api-tool
 
 go 1.23.6
 

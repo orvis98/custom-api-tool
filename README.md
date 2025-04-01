@@ -1,4 +1,4 @@
-# api-tool
+# custom-api-tool
 
 A tool for maintaining Crossplane XRDs and Compositions in CUE.
 
@@ -11,9 +11,9 @@ As Crossplane is evaluating the same CUE, we can easily validate and test the Cu
 
 ```mermaid
 graph TD;
-  CustomAPI --> api-tool;
-  api-tool -- Generates -->CompositeResourceDefinition;
-  api-tool -- Generates -->Composition;
+  CustomAPI --> custom-api-tool;
+  custom-api-tool -- Generates -->CompositeResourceDefinition;
+  custom-api-tool -- Generates -->Composition;
 ```
 
 
@@ -22,7 +22,7 @@ graph TD;
 Example showing how to install the WebApp sample API to a Kubernetes cluster:
 
 ```console
-$ dagger -m github.com/orvis98/api-tool call gen --api ./samples/webapp.cue | kubectl apply -f - --server-side
+$ dagger -m github.com/orvis98/custom-api-tool call gen --api ./samples/webapp.cue | kubectl apply -f - --server-side
 $ kubectl apply -f ./samples/webapp.yaml
 
 $ kubectl get object
@@ -37,7 +37,7 @@ demo-2cjfb-service          Service          default          True     True    2
 Example showing how a CustomAPI can be tested without Crossplane:
 
 ```console
-$ dagger -m github.com/orvis98/api-tool call test --api ./samples/webapp.cue --manifest ./samples/webapp.yaml
+$ dagger -m github.com/orvis98/custom-api-tool call test --api ./samples/webapp.cue --manifest ./samples/webapp.yaml
 desired:
   composite:
     resource:

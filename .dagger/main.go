@@ -2,13 +2,13 @@ package main
 
 import (
 	"context"
-	"dagger/api-tool/internal/dagger"
+	"dagger/custom-api-tool/internal/dagger"
 )
 
-type ApiTool struct{}
+type CustomApiTool struct{}
 
 // A container with CUE and a source directory.
-func (m *ApiTool) Cue(
+func (m *CustomApiTool) Cue(
 	// +optional
 	// +defaultPath="/"
 	source *dagger.Directory,
@@ -19,7 +19,7 @@ func (m *ApiTool) Cue(
 }
 
 // Generate and print an XRD from a CustomAPI definition.
-func (m *ApiTool) GenXRD(
+func (m *CustomApiTool) GenXRD(
 	ctx context.Context,
 	api *dagger.File,
 	// +optional
@@ -33,7 +33,7 @@ func (m *ApiTool) GenXRD(
 }
 
 // Generate and print Compositions from a CustomAPI definition.
-func (m *ApiTool) GenCompositions(
+func (m *CustomApiTool) GenCompositions(
 	ctx context.Context,
 	api *dagger.File,
 	// +optional
@@ -47,7 +47,7 @@ func (m *ApiTool) GenCompositions(
 }
 
 // Generate and print XRD and Compositions from a CustomAPI definition.
-func (m *ApiTool) Gen(
+func (m *CustomApiTool) Gen(
 	ctx context.Context,
 	api *dagger.File,
 	// +optional
@@ -60,7 +60,7 @@ func (m *ApiTool) Gen(
 }
 
 // Test a CustomAPI using a manifest and print the result.
-func (m *ApiTool) Test(
+func (m *CustomApiTool) Test(
 	ctx context.Context,
 	manifest *dagger.File,
 	api *dagger.File,

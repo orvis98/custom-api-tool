@@ -1,4 +1,4 @@
-module: "github.com/orvis98/api-tool"
+module: "github.com/orvis98/custom-api-tool"
 language: {
 	version: "v0.12.0"
 }

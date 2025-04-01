@@ -8,12 +8,12 @@ import (
 claim: {...}
 composite: {...}
 apitoolv1.#Test & {
-	#apiSpec: #APISpec
-	if #APISpec.claimNames != _|_ {
-		#apiVersion: strings.TrimPrefix(claim.apiVersion, "\(#apiSpec.group)/")
+	#customAPI: #CustomAPI
+	if #customAPI.claimNames != _|_ {
+		#apiVersion: strings.TrimPrefix(claim.apiVersion, "\(#customAPI.group)/")
 	}
-	if #APISpec.claimNames == _|_ {
-		#apiVersion: strings.TrimPrefix(composite.apiVersion, "\(#apiSpec.group)/")
+	if #customAPI.claimNames == _|_ {
+		#apiVersion: strings.TrimPrefix(composite.apiVersion, "\(#customAPI.group)/")
 	}
 	#claim:     claim
 	#composite: composite

@@ -12,49 +12,49 @@ command: help: exec.Run & {
 	cmd: "cue help cmd"
 }
 
-// Print the XRD manifest generated from the API specification to stdout.
+// Print the XRD manifest generated from the CustomAPI definition to stdout.
 command: xrd: {
 	// Generate a Crossplane XRD from the API specification.
 	_xrd: {
 		apiVersion: "apiextensions.crossplane.io/v1"
 		kind:       "CompositeResourceDefinition"
-		metadata: name: #APISpec.name
+		metadata: name: #CustomAPI.name
 		spec: {
-			group: #APISpec.group
+			group: #CustomAPI.group
 			names: {
-				kind:   #APISpec.kind
-				plural: #APISpec.plural
+				kind:   #CustomAPI.kind
+				plural: #CustomAPI.plural
 				// shortNames can be undefined, but cannot be an empty list
-				if #APISpec.shortNames != [] {
-					shortNames: #APISpec.shortNames
+				if #CustomAPI.shortNames != [] {
+					shortNames: #CustomAPI.shortNames
 				}
-				singular: #APISpec.singular
+				singular: #CustomAPI.singular
 			}
-			if #APISpec.claimNames != _|_ {
+			if #CustomAPI.claimNames != _|_ {
 				claimNames: {
-					kind:     #APISpec.claimNames.kind
-					singular: #APISpec.claimNames.singular
-					plural:   #APISpec.claimNames.plural
+					kind:     #CustomAPI.claimNames.kind
+					singular: #CustomAPI.claimNames.singular
+					plural:   #CustomAPI.claimNames.plural
 					// shortNames can be undefined, but cannot be an empty list
-					if #APISpec.claimNames.shortNames != [] {
-						shortNames: #APISpec.claimNames.shortNames
+					if #CustomAPI.claimNames.shortNames != [] {
+						shortNames: #CustomAPI.claimNames.shortNames
 					}
 				}
 			}
 			versions: [
-				for k, v in #APISpec.versions {
+				for k, v in #CustomAPI.versions {
 					name:          k
 					deprecated:    v.deprecated
 					referenceable: v.referenceable
 					served:        v.served
 					_cmd: {
 						"spec-\(k)": exec.Run & {
-							cmd:     "cue def . -e #APISpec.versions.\(k).spec"
+							cmd:     "cue def . -e #CustomAPI.versions.\(k).spec"
 							stdout:  string
 							_schema: "#spec\(strings.TrimPrefix(stdout, "\n_#def\n_#def"))"
 						}
 						"status-\(k)": exec.Run & {
-							cmd:     "cue def . -e #APISpec.versions.\(k).status"
+							cmd:     "cue def . -e #CustomAPI.versions.\(k).status"
 							stdout:  string
 							_schema: "#status\(strings.TrimPrefix(stdout, "\n_#def\n_#def"))"
 						}
@@ -77,17 +77,17 @@ command: xrd: {
 	}
 }
 
-// Print the Composition manifest(s) generated from the API specification to stdout.
+// Print the Composition manifest(s) generated from the CustomAPI definition to stdout.
 command: composition: {
-	for k, v in #APISpec.versions {
+	for k, v in #CustomAPI.versions {
 		"composition-\(k)": {
 			apiVersion: "apiextensions.crossplane.io/v1"
 			kind:       "Composition"
-			metadata: name: "\(#APISpec.name)-\(k)"
+			metadata: name: "\(#CustomAPI.name)-\(k)"
 			spec: {
 				compositeTypeRef: {
-					apiVersion: "\(#APISpec.group)/\(k)"
-					kind:       #APISpec.kind
+					apiVersion: "\(#CustomAPI.group)/\(k)"
+					kind:       #CustomAPI.kind
 				}
 				mode: "Pipeline"
 				pipeline: [{
@@ -104,7 +104,7 @@ command: composition: {
 			}
 		}
 		"def-\(k)": exec.Run & {
-			cmd:    "cue def -e #APISpec.versions.\(k).composition --inline-imports"
+			cmd:    "cue def -e #CustomAPI.versions.\(k).composition --inline-imports"
 			stdout: string
 		}
 		"print-\(k)": cli.Print & {
@@ -113,24 +113,24 @@ command: composition: {
 	}
 }
 
-// Print the result of testing a manifest against an APISpec using CUE.
+// Print the result of testing a manifest against a CustomAPI definition using CUE.
 command: test: {
 	var: {
 		// Path to a file containing the manifest to test.
 		manifest: string @tag(manifest)
-		// Path to the APISpec.
-		apiSpec: *"apispec.cue" | string @tag(apiSpec)
+		// Path to the CustomAPI definition file.
+		customAPI: *"api.cue" | string @tag(api)
 		// Output format.
 		out: *"yaml" | "json" | "cue"
 	}
-	if #APISpec.claimNames != _|_ {
+	if #CustomAPI.claimNames != _|_ {
 		read: exec.Run & {
-			cmd: "cue export \(var.manifest) -l \"claim\" samples/test.cue \(var.apiSpec) -e result.response --out=\(var.out)"
+			cmd: "cue export \(var.manifest) -l \"claim\" samples/test.cue \(var.customAPI) -e result.response --out=\(var.out)"
 		}
 	}
-	if #APISpec.claimNames == _|_ {
+	if #CustomAPI.claimNames == _|_ {
 		read: exec.Run & {
-			cmd: "cue export \(var.manifest) -l \"composite\" samples/test.cue \(var.apiSpec) -e result.response --out=\(var.out)"
+			cmd: "cue export \(var.manifest) -l \"composite\" samples/test.cue \(var.customAPI) -e result.response --out=\(var.out)"
 		}
 	}
 }

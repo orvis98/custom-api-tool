@@ -1,8 +1,8 @@
 package v1alpha1
 
-// Test defines a test for an APISpec.
+// Test defines a test for an CustomAPI definition.
 #Test: {
-	#apiSpec:    #APISpec
+	#customAPI:  #CustomAPI
 	#apiVersion: string | *"v1alpha1"
 	#claim: {
 		spec: {
@@ -12,14 +12,14 @@ package v1alpha1
 		...
 	}
 	#composite: {
-		apiVersion: "\(#apiSpec.group)/\(#apiVersion)"
-		kind:       #apiSpec.kind
-		if #apiSpec.claimNames != _|_ {
+		apiVersion: "\(#customAPI.group)/\(#apiVersion)"
+		kind:       #customAPI.kind
+		if #customAPI.claimNames != _|_ {
 			metadata: name: #claim.metadata.name
 			spec: #claim.spec & {
 				claimRef: {
 					apiVersion: #composite.apiVersion
-					kind:       #apiSpec.claimNames.kind
+					kind:       #customAPI.claimNames.kind
 					name:       #claim.metadata.name
 					namespace:  #claim.metadata.namespace
 				}
@@ -27,7 +27,7 @@ package v1alpha1
 			...
 		}
 	}
-	result: #apiSpec.versions[#apiVersion].composition & {
+	result: #customAPI.versions[#apiVersion].composition & {
 		composite: #composite
 	}
 }

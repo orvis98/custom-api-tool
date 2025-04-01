@@ -9,7 +9,7 @@ import (
 )
 
 // Specification for the WebApp custom Kubernetes API.
-#APISpec: apitoolv1.#APISpec & {
+#CustomAPI: apitoolv1.#CustomAPI & {
 	group: "example.com"
 	kind:  "XWebApp"
 	claimNames: kind: "WebApp"
@@ -42,7 +42,7 @@ import (
 // Composition function for API version `v1alpha1`.`
 #v1alpha1: apitoolv1.#Composition & {
 	composite: {
-		spec: #APISpec.versions.v1alpha1.spec
+		spec: #CustomAPI.versions.v1alpha1.spec
 		...
 	}
 	objects: {

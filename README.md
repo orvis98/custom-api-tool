@@ -4,14 +4,14 @@ A tool for maintaining Crossplane XRDs and Compositions in CUE.
 
 ## Architecture
 
-An APISpec defines the schema for a new custom Kubernetes API together with a function that Crossplane should use to create and manage new composite resources.
+A CustomAPI is a CUE definition including the desired schema for a new custom Kubernetes API together with a function that Crossplane should use to create and manage new composite resources.
 With CUE's first class support for OpenAPI data schemas, complex CompositeResourceDefinitions can be generated from safe CUE schemas.
-Pair this with the [function-cue](https://github.com/crossplane-contrib/function-cue) Crossplane Function and we can have Crossplane evaluate the same CUE defined in the APISpec.
-As Crossplane is evaluating the same CUE, we can easily validate and test the APISpec just with CUE (i.e. no need to apply it to a Kubernetes cluster).
+Pair this with the [function-cue](https://github.com/crossplane-contrib/function-cue) Crossplane Function and we can have Crossplane evaluate the same CUE as defined in the CustomAPI.
+As Crossplane is evaluating the same CUE, we can easily validate and test the CustomAPI just with CUE (i.e. no need to apply it to a Kubernetes cluster).
 
 ```mermaid
 graph TD;
-  APISpec --> api-tool;
+  CustomAPI --> api-tool;
   api-tool -- Generates -->CompositeResourceDefinition;
   api-tool -- Generates -->Composition;
 ```
@@ -22,7 +22,7 @@ graph TD;
 Example showing how to install the WebApp sample API to a Kubernetes cluster:
 
 ```console
-$ dagger -m github.com/orvis98/api-tool call gen --api-spec ./samples/webapp.cue | kubectl apply -f - --server-side
+$ dagger -m github.com/orvis98/api-tool call gen --api ./samples/webapp.cue | kubectl apply -f - --server-side
 $ kubectl apply -f ./samples/webapp.yaml
 
 $ kubectl get object
@@ -34,10 +34,10 @@ demo-2cjfb-securitypolicy   SecurityPolicy   default          True     True    2
 demo-2cjfb-service          Service          default          True     True    2s
 ```
 
-Example showing how an APISpec can be tested without Crossplane:
+Example showing how a CustomAPI can be tested without Crossplane:
 
 ```console
-$ dagger -m github.com/orvis98/api-tool call test --api-spec ./samples/webapp.cue --manifest ./samples/webapp.yaml
+$ dagger -m github.com/orvis98/api-tool call test --api ./samples/webapp.cue --manifest ./samples/webapp.yaml
 desired:
   composite:
     resource:

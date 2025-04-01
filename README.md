@@ -62,12 +62,12 @@ desired:
               spec:
                 selector:
                   matchLabels:
-                    kcp.io/name: demo
+                    composite.crossplane.io/name: demo
                 replicas: 1
                 template:
                   metadata:
                     labels:
-                      kcp.io/name: demo
+                      composite.crossplane.io/name: demo
                   spec:
                     containers:
                       - name: webapp
@@ -94,7 +94,7 @@ desired:
                     port: 80
                     targetPort: 80
                 selector:
-                  kcp.io/name: demo
+                  composite.crossplane.io/name: demo
     httproute:
       resource:
         apiVersion: kubernetes.crossplane.io/v1alpha2

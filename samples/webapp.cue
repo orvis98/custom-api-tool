@@ -50,7 +50,7 @@ import (
 			apiVersion: "apps/v1"
 			kind:       "Deployment"
 			spec: {
-				selector: matchLabels: "kcp.io/name": composite.metadata.name
+				selector: matchLabels: "composite.crossplane.io/name": composite.metadata.name
 				replicas: composite.spec.replicas
 				template: {
 					metadata: labels: selector.matchLabels

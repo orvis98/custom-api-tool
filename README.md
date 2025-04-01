@@ -4,7 +4,7 @@ A tool for maintaining Crossplane XRDs and Compositions in CUE.
 
 ## Architecture
 
-A CustomAPI is a CUE definition including the desired schema for a new custom Kubernetes API together with a function that Crossplane should use to create and manage new composite resources.
+A CustomAPI is a CUE definition including the desired schema for a new custom Kubernetes API together with functions that Crossplane should use to create and manage new composite resources.
 With CUE's first class support for OpenAPI data schemas, complex CompositeResourceDefinitions can be generated from safe CUE schemas.
 Pair this with the [function-cue](https://github.com/crossplane-contrib/function-cue) Crossplane Function and we can have Crossplane evaluate the same CUE as defined in the CustomAPI.
 As Crossplane is evaluating the same CUE, we can easily validate and test the CustomAPI just with CUE (i.e. no need to apply it to a Kubernetes cluster).

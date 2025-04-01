@@ -24,6 +24,11 @@ package v1alpha1
 
 	// The objects to create as part of the function.
 	objects: [string]: {
+		#composite: {
+			apiVersion: string | *"kubernetes.crossplane.io/v1alpha2"
+			kind:       string | *"Object"
+			metadata: name: string
+		}
 		metadata: {
 			// If claims are enabled set name from Claim.
 			if composite.spec.claimRef != _|_ {
@@ -54,9 +59,9 @@ package v1alpha1
 		resources: {
 			for k, v in objects {
 				"\(k)": resource: {
-					apiVersion: "kubernetes.crossplane.io/v1alpha2"
-					kind:       "Object"
-					metadata: name: "\(composite.metadata.name)-\(k)"
+					apiVersion: v.#composite.apiVersion
+					kind:       v.#composite.kind
+					metadata: name: string | *"\(composite.metadata.name)-\(k)"
 					spec: forProvider: manifest: v
 				}
 			}

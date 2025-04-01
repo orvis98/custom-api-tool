@@ -1,7 +1,7 @@
 package main
 
 import (
-	apitoolv1 "github.com/orvis98/api-tool/v1alpha1"
+	apitoolv1 "github.com/orvis98/custom-api-tool/v1alpha1"
 	//appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	httproutev1 "gateway.networking.k8s.io/httproute/v1"

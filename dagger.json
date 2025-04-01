@@ -1,5 +1,5 @@
 {
-  "name": "api-tool",
+  "name": "custom-api-tool",
   "engineVersion": "v0.17.2",
   "sdk": {
     "source": "go"

@@ -1,7 +1,7 @@
 package main
 
 import (
-	apitoolv1 "github.com/orvis98/api-tool/v1alpha1"
+	apitoolv1 "github.com/orvis98/custom-api-tool/v1alpha1"
 	"strings"
 )
 

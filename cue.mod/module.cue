@@ -5,4 +5,8 @@ language: {
 source: {
 	kind: "git"
 }
-deps: {}
+deps: {
+	"github.com/orvis98/daggerverse/oscal@v0": {
+		v: "v0.1.0"
+	}
+}

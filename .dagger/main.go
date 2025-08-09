@@ -28,6 +28,7 @@ func (m *CustomApiTool) GenXRD(
 ) (string, error) {
 	return m.Cue(source).
 		WithFile("api.cue", api).
+		WithExec([]string{"cue", "mod", "tidy"}).
 		WithExec([]string{"cue", "cmd", "xrd"}).
 		Stdout(ctx)
 }
@@ -42,6 +43,7 @@ func (m *CustomApiTool) GenCompositions(
 ) (string, error) {
 	return m.Cue(source).
 		WithFile("api.cue", api).
+		WithExec([]string{"cue", "mod", "tidy"}).
 		WithExec([]string{"cue", "cmd", "composition"}).
 		Stdout(ctx)
 }
@@ -71,6 +73,7 @@ func (m *CustomApiTool) Test(
 	return m.Cue(source).
 		WithFile("test.yaml", manifest).
 		WithFile("api.cue", api).
+		WithExec([]string{"cue", "mod", "tidy"}).
 		WithExec([]string{"cue", "cmd", "test", "-t", "manifest=test.yaml", "-t", "api=api.cue"}).
 		Stdout(ctx)
 }

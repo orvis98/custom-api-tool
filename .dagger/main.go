@@ -14,7 +14,7 @@ func (m *CustomApiTool) Cue(
 	source *dagger.Directory,
 ) *dagger.Container {
 	return dag.Container().
-		From("cuelang/cue:0.12.0").
+		From("cuelang/cue:0.14.0").
 		WithDirectory(".", source)
 }
 

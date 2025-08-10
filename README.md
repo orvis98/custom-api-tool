@@ -47,125 +47,90 @@ desired:
   resources:
     deployment:
       resource:
-        apiVersion: kubernetes.crossplane.io/v1alpha2
-        kind: Object
+        apiVersion: apps/v1
+        kind: Deployment
         metadata:
-          name: demo-deployment
+          name: demo
+          namespace: default
         spec:
-          forProvider:
-            manifest:
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: demo
-                namespace: default
-              spec:
-                selector:
-                  matchLabels:
-                    composite.crossplane.io/name: demo
-                replicas: 1
-                template:
-                  metadata:
-                    labels:
-                      composite.crossplane.io/name: demo
-                  spec:
-                    containers:
-                      - name: webapp
-                        image: nginx
-                        ports:
-                          - containerPort: 80
+          replicas: 1
+          selector:
+            matchLabels:
+              composite.crossplane.io/name: demo
+          template:
+            metadata:
+              labels:
+                composite.crossplane.io/name: demo
+            spec:
+              containers:
+                - image: nginx
+                  name: webapp
+                  ports:
+                    - containerPort: 80
     service:
       resource:
-        apiVersion: kubernetes.crossplane.io/v1alpha2
-        kind: Object
+        apiVersion: v1
+        kind: Service
         metadata:
-          name: demo-service
+          name: demo
+          namespace: default
         spec:
-          forProvider:
-            manifest:
-              apiVersion: v1
-              kind: Service
-              metadata:
-                name: demo
-                namespace: default
-              spec:
-                ports:
-                  - name: http
-                    port: 80
-                    targetPort: 80
-                selector:
-                  composite.crossplane.io/name: demo
+          ports:
+            - name: http
+              port: 80
+              targetPort: 80
+          selector:
+            composite.crossplane.io/name: demo
     httproute:
       resource:
-        apiVersion: kubernetes.crossplane.io/v1alpha2
-        kind: Object
+        apiVersion: gateway.networking.k8s.io/v1
+        kind: HTTPRoute
         metadata:
-          name: demo-httproute
+          name: demo
+          namespace: default
         spec:
-          forProvider:
-            manifest:
-              apiVersion: gateway.networking.k8s.io/v1
-              kind: HTTPRoute
-              metadata:
-                name: demo
-                namespace: default
-              spec:
-                hostnames:
-                  - demo
-                parentRefs:
-                  - name: webapps
-                    namespace: default
-                    sectionName: http
-                rules:
-                  - backendRefs:
-                      - group: ""
-                        kind: Service
-                        name: demo
-                        port: 80
-                        weight: 1
-                    matches:
-                      - path:
-                          type: PathPrefix
-                          value: /
+          hostnames:
+            - demo
+          parentRefs:
+            - name: webapps
+              namespace: default
+              sectionName: http
+          rules:
+            - backendRefs:
+                - group: ""
+                  kind: Service
+                  name: demo
+                  port: 80
+                  weight: 1
+              matches:
+                - path:
+                    type: PathPrefix
+                    value: /
     secret:
       resource:
-        apiVersion: kubernetes.crossplane.io/v1alpha2
-        kind: Object
+        apiVersion: v1
+        kind: Secret
         metadata:
-          name: demo-secret
-        spec:
-          forProvider:
-            manifest:
-              apiVersion: v1
-              kind: Secret
-              metadata:
-                name: demo
-                namespace: default
-              stringData:
-                .htpasswd: |
-                  foo:{SHA}Ys23Ag/5IOWqZCw9QGaVDdHwH00=
+          name: demo
+          namespace: default
+        stringData:
+          .htpasswd: |
+            foo:{SHA}Ys23Ag/5IOWqZCw9QGaVDdHwH00=
     securitypolicy:
       resource:
-        apiVersion: kubernetes.crossplane.io/v1alpha2
-        kind: Object
+        apiVersion: gateway.envoyproxy.io/v1alpha1
+        kind: SecurityPolicy
         metadata:
-          name: demo-securitypolicy
+          name: demo
+          namespace: default
         spec:
-          forProvider:
-            manifest:
-              apiVersion: gateway.envoyproxy.io/v1alpha1
-              kind: SecurityPolicy
-              metadata:
-                name: demo
-                namespace: default
-              spec:
-                basicAuth:
-                  users:
-                    group: ""
-                    kind: Secret
-                    name: demo
-                targetRef:
-                  group: gateway.networking.k8s.io
-                  kind: HTTPRoute
-                  name: demo
+          basicAuth:
+            users:
+              group: ""
+              kind: Secret
+              name: demo
+          targetRef:
+            group: gateway.networking.k8s.io
+            kind: HTTPRoute
+            name: demo
 ```

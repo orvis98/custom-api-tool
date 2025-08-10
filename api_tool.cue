@@ -16,7 +16,7 @@ command: help: exec.Run & {
 command: xrd: {
 	// Generate a Crossplane XRD from the API specification.
 	_xrd: {
-		apiVersion: "apiextensions.crossplane.io/v1"
+		apiVersion: "apiextensions.crossplane.io/v2"
 		kind:       "CompositeResourceDefinition"
 		metadata: name: #CustomAPI.name
 		spec: {
@@ -29,17 +29,6 @@ command: xrd: {
 					shortNames: #CustomAPI.shortNames
 				}
 				singular: #CustomAPI.singular
-			}
-			if #CustomAPI.claimNames != _|_ {
-				claimNames: {
-					kind:     #CustomAPI.claimNames.kind
-					singular: #CustomAPI.claimNames.singular
-					plural:   #CustomAPI.claimNames.plural
-					// shortNames can be undefined, but cannot be an empty list
-					if #CustomAPI.claimNames.shortNames != [] {
-						shortNames: #CustomAPI.claimNames.shortNames
-					}
-				}
 			}
 			versions: [
 				for k, v in #CustomAPI.versions {
@@ -123,14 +112,7 @@ command: test: {
 		// Output format.
 		out: *"yaml" | "json" | "cue"
 	}
-	if #CustomAPI.claimNames != _|_ {
-		read: exec.Run & {
-			cmd: "cue export \(var.manifest) -l \"claim\" samples/test.cue \(var.customAPI) -e result.response --out=\(var.out)"
-		}
-	}
-	if #CustomAPI.claimNames == _|_ {
-		read: exec.Run & {
-			cmd: "cue export \(var.manifest) -l \"composite\" samples/test.cue \(var.customAPI) -e result.response --out=\(var.out)"
-		}
+	read: exec.Run & {
+		cmd: "cue export \(var.manifest) -l \"composite\" samples/test.cue \(var.customAPI) -e result.response --out=\(var.out)"
 	}
 }
